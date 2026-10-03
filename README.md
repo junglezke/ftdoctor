@@ -29,6 +29,8 @@ pip install ftdoctor
 ftdoctor anshpunia8597/mistral-7b-medical-qa-finetuned
 ```
 
+Or the latest from `main`: `pip install git+https://github.com/junglezke/ftdoctor`.
+
 That is the banner above: a real Mistral-7B fine-tune on the Hub. ftdoctor reads its
 `trainer_state.json` and the checkpoint folders the repo actually holds, and says:
 
