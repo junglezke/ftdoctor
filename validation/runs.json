@@ -1,0 +1,100 @@
+{
+  "_comment": "Public fine-tuning logs ftdoctor is validated against, chosen from a sweep of 89 public trainer_state.json files to cover every check. Raw logs are downloaded into validation/.cache/ (gitignored) by fetch.py and never committed: they belong to their authors. `expect` pins every finding and its severity, so a change that alters a real-run verdict fails `python validation/run.py --check`.",
+  "runs": [
+    {
+      "id": "audio-classifier-accuracy",
+      "source": "https://huggingface.co/Zorlu5454/ast-finetuned-audioset-10-10-0.4593-finetuned-gtzan",
+      "file": "trainer_state.json",
+      "what_is_true": "Selected on eval_accuracy. eval_loss rises 37% from its minimum at step 480 while accuracy keeps improving to the last step: by the metric the author chose, the final checkpoint is the best one. Not overfitting.",
+      "expect": {
+        "stopped_improving": "INFO",
+        "metric_disagreement": "INFO",
+        "loss_spikes": "INFO",
+        "gradients": "INFO"
+      }
+    },
+    {
+      "id": "mistral-7b-medical-qa",
+      "source": "https://huggingface.co/anshpunia8597/mistral-7b-medical-qa-finetuned",
+      "file": "checkpoint-1000/trainer_state.json",
+      "what_is_true": "eval_loss bottoms out at step 900 and the final eval is 6% worse, outside the eval's noise.",
+      "expect": {
+        "overfitting": "WARNING",
+        "incomplete": "INFO"
+      }
+    },
+    {
+      "id": "llamafactory-unsloth-sft",
+      "source": "https://huggingface.co/mo22zy/LLM-fineTune-LLaMAFactory-UnSloth",
+      "file": "trainer_state.json",
+      "what_is_true": "eval_loss best at step 1000 of 1926; final 4% worse while training loss keeps falling and the train/eval gap widens from 0.09 to 0.22. Half the run came after the best point.",
+      "expect": {
+        "overfitting": "WARNING"
+      }
+    },
+    {
+      "id": "llama-3.1-8b-sft-loss-rises",
+      "source": "https://huggingface.co/Neelectric/Llama-3.1-8B-Instruct_SFT_mathsp_ewc_v00.20",
+      "file": "trainer_state.json",
+      "what_is_true": "No eval. Training loss rises from 0.60 to 0.67 over three epochs at a constant learning rate of 1e-6.",
+      "expect": {
+        "no_eval": "WARNING",
+        "not_learning": "WARNING"
+      }
+    },
+    {
+      "id": "gemma-3-12b-grpo-is-rl",
+      "source": "https://huggingface.co/WMTH-100d2exam/gemma-3-12b-it-matura-history-sft-grpo-closed-lora-r32",
+      "file": "trainer_state.json",
+      "what_is_true": "A GRPO run, not SFT: its logged loss is 0.0 from the first step, which is normal for GRPO. An earlier version diagnosed it as 'trained on nothing, labels masked'. It must be recognised as RL and handed to rldoctor, with no loss-based verdicts.",
+      "expect": {
+        "rl_run": "INFO",
+        "incomplete": "INFO"
+      }
+    },
+    {
+      "id": "qwen2.5-7b-sft-epoch-jumps",
+      "source": "https://huggingface.co/agurung/Qwen2.5-7B-1M-SFT-LongStory",
+      "file": "trainer_state.json",
+      "what_is_true": "Loss doubles on exactly the first logged step of each of its 10 epochs (steps 8, 15, ..., 64). Periodic: a loss-normalisation artefact at the epoch boundary, not instability.",
+      "expect": {
+        "loss_spikes": "WARNING"
+      }
+    },
+    {
+      "id": "mistral-7b-fp16-overflow",
+      "source": "https://huggingface.co/biankasimkova/mistral-sk-7b-finetuned-court-decisions-sk",
+      "file": "trainer_state.json",
+      "what_is_true": "No eval. Gradient norm is inf at 10 scattered steps out of 34,000 while the loss stays healthy: the fp16 loss scaler skipping overflowing steps, which is harmless.",
+      "expect": {
+        "no_eval": "WARNING",
+        "gradients": "INFO"
+      }
+    },
+    {
+      "id": "whisper-small-clean",
+      "source": "https://huggingface.co/jjnhuang/whisper-small-finetuned-iwslt-irish-welsh-curriculum-synthetic",
+      "file": "last-checkpoint/trainer_state.json",
+      "what_is_true": "A clean run ranked on WER: nothing to report.",
+      "expect": {}
+    },
+    {
+      "id": "qwen-7b-stopped-improving",
+      "source": "https://huggingface.co/agurung/v4_savebestearly_sft_qwen7B_25percent_lr_1e4_bptt_offset",
+      "file": "trainer_state.json",
+      "what_is_true": "eval_loss reaches its final level well before the end; nothing gets worse, so the final checkpoint is fine.",
+      "expect": {
+        "stopped_improving": "INFO"
+      }
+    },
+    {
+      "id": "speecht5-eval-below-train",
+      "source": "https://huggingface.co/Zorlu5454/speecht5_finetuned_voxpopuli_nl",
+      "file": "trainer_state.json",
+      "what_is_true": "eval_loss sits far below training loss throughout -- benign here (TTS training adds loss terms the eval does not), but the kind of thing to rule out leakage on.",
+      "expect": {
+        "eval_below_train": "INFO"
+      }
+    }
+  ]
+}

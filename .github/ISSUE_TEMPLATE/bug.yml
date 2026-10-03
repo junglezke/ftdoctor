@@ -1,0 +1,21 @@
+name: Bug
+description: Something crashed, or did not run.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: The command you ran and what it printed. Tracebacks are welcome.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: output of `--version`
+  - type: input
+    id: env
+    attributes:
+      label: Python and OS
+      placeholder: Python 3.11, Ubuntu 22.04

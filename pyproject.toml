@@ -1,0 +1,56 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ftdoctor"
+version = "0.1.0"
+description = "Did your fine-tune overfit? Which checkpoint should you keep? What can you delete? Reads any HuggingFace Trainer run, local or on the Hub."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "junglezke" }]
+keywords = [
+    "fine-tuning", "llm", "huggingface", "transformers", "trainer", "lora", "qlora",
+    "overfitting", "checkpoint", "early-stopping", "unsloth", "trl", "sft", "mlops",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = ["numpy>=1.21"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "pytest-cov>=4.0", "ruff>=0.6"]
+
+[project.urls]
+Homepage = "https://github.com/junglezke/ftdoctor"
+Repository = "https://github.com/junglezke/ftdoctor"
+Issues = "https://github.com/junglezke/ftdoctor/issues"
+
+[project.scripts]
+ftdoctor = "ftdoctor.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ftdoctor"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501", "B008", "UP006", "UP035", "UP045"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

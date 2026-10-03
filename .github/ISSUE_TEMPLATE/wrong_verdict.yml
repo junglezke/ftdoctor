@@ -1,0 +1,32 @@
+name: Wrong verdict
+description: ftdoctor said something about your run that is not true -- or missed something that is.
+labels: [wrong-verdict]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The most valuable issue you can file. Every threshold in ftdoctor was set against
+        public runs, and several were changed because one of them proved it wrong.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Which way was it wrong?
+      options:
+        - It flagged a run that was fine
+        - It missed a real problem
+        - It recommended the wrong checkpoint
+        - The finding was right but the advice was wrong
+    validations:
+      required: true
+  - type: input
+    id: run
+    attributes:
+      label: The run
+      description: A public Hub model id, or attach the trainer_state.json.
+      placeholder: owner/model
+  - type: textarea
+    id: truth
+    attributes:
+      label: What was actually going on
+    validations:
+      required: true

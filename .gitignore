@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.coverage
+.venv/
+*.html
+# Public training logs used for validation: other people's data, fetched on demand.
+validation/.cache/

@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+title: "ftdoctor: checkpoint selection and failure diagnosis for fine-tuning runs"
+message: "If you use this software, please cite it as below."
+type: software
+authors:
+  - alias: junglezke
+repository-code: "https://github.com/junglezke/ftdoctor"
+abstract: >-
+  ftdoctor reads the training history a HuggingFace Trainer leaves in
+  trainer_state.json -- locally or from a model repository on the Hub -- and
+  reports whether the run overfit, which existing checkpoint to keep under a
+  noise-aware criterion, and which documented failure modes the run shows.
+  Thresholds were calibrated on 89 public fine-tuning logs.
+keywords: [fine-tuning, large language models, overfitting, checkpoint selection, huggingface]
+license: Apache-2.0
+version: 0.1.0
